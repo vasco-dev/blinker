@@ -14,6 +14,7 @@ public class Collectible : MonoBehaviour
     {
         //set rigidbody and throw error if there is none
         Body = GetComponent<Rigidbody>();
+
         if(Body == null){
             Debug.LogError("NO RIGID BODY");
         }

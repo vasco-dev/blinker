@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
 
     private float _currentTime = 0;
 
+    public LayerMask LayerCollectible { get; private set; } = 0;
+
 
 
 
@@ -38,6 +40,11 @@ public class GameManager : MonoBehaviour
         else
         {
             Debug.LogError("NO LEVEL DATA!");
+        }
+
+        while (LayerCollectible != CurrentLevelData.CollectiblePrefabs[0].layer)
+        {
+            LayerCollectible = CurrentLevelData.CollectiblePrefabs[0].layer;
         }
 
     }
