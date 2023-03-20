@@ -6,46 +6,40 @@ using UnityEngine;
 
 public class CollectibleManager : MonoBehaviour
 {
-    [Header("DIFFERENT COLLECTIBLE PREFABS")]
-    
-    [SerializeField] private Collectible _prefabCollectibleA;
-    [SerializeField] private Collectible _prefabCollectibleB;
-    [SerializeField] private Collectible _prefabCollectibleC;
-    [SerializeField] private Collectible _prefabCollectibleD;
-    [SerializeField] private Collectible _prefabBomb;
 
-     [Space(20)]
+    [Space(20)]
 
     [Header("SPAWNER AND CENTER TRANSFORMS")]
     [Min(1)]
     [SerializeField] private List<Transform> listSpawners = new List<Transform>();
     [SerializeField] private Transform _centerPoint;
 
-     [Space(20)]
+    [Space(20)]
 
     [Header("SPAWNING")]
-    
-
-    [SerializeField] private int spawnRandOffsetScale = 500;
-
     /// <summary>
-    /// number of subdivisons per tick, how many times the spawners are gonna spawn in a single tick 
+    /// maximum deviation (offset) from center position
     /// </summary>
-    [Min(1)]
-    [SerializeField] private int subTicks = 1;
+    [SerializeField] private int spawnRandOffsetScale = 500;
 
     /// <summary>
     /// duration of each tick, in seconds
     /// </summary>
-    [Min(1)]
-    [SerializeField] private float _tickDuration = 3f;
+    private float _currentTickTime = 3f;
 
-     [Space(20)]
+    /// <summary>
+    /// number of subdivisons per tick, how many times the spawners are gonna spawn in a single tick 
+    /// </summary>
+    private int _currentSubTickRate = 1;  
+
+    [Space(20)]
 
     private float _currentTimeInTick = 0f;
 
     private List<Collectible> listCollectibles = new List<Collectible>();
     private int _maxSizeCollectiblePool = 20;
+
+
     public static CollectibleManager Instance { get; private set; }
     private void Awake()
     {
@@ -75,17 +69,25 @@ public class CollectibleManager : MonoBehaviour
         StopAllCoroutines();
     }
 
-    public void RemoveCollectible(Collectible collectibleToRemove){
-        listCollectibles.Remove(collectibleToRemove);
+    public void UpdateLevelData()
+    {
+        _currentTickTime = GameManager.Instance.CurrentLevelData.TickTime;
+        _currentSubTickRate = GameManager.Instance.CurrentLevelData.SubtickRate;
+        Debug.Log("Upped Level");
+
     }
 
+    /// <summary>
+    /// Spawn a collectible from a given Spawner
+    /// </summary>   
+    /// 
     private void SpawnCollectible(int spawner)
     {
-        //instantiate new collectible
-        Collectible spawnedCollectible = Instantiate(_prefabCollectibleB);
+        Collectible randomPrefabToSpawn = GetRandomCollectible();
 
-        //randomize the spawner and go to it's position
-        spawnedCollectible.transform.position = listSpawners[spawner].transform.position;
+        //instantiate new collectible in the spawner's position
+        Collectible spawnedCollectible = Instantiate(randomPrefabToSpawn, listSpawners[spawner].transform.position, Quaternion.identity, transform);
+
 
         //get the slightly randomized and normalized direction of the movement and then multiply by the preset speed of the specific collectible
         int randX = UnityEngine.Random.Range(-spawnRandOffsetScale, spawnRandOffsetScale+1);
@@ -108,6 +110,53 @@ public class CollectibleManager : MonoBehaviour
 
         listCollectibles.Add(spawnedCollectible);
     }
+
+    /// <summary>
+    /// Randomizes which Collectible to spawn based on chances from current LevelData
+    /// </summary>
+    /// <returns>Random Collectible</returns>
+    private Collectible GetRandomCollectible()
+    {
+        LevelData levelData = GameManager.Instance.CurrentLevelData;
+        int collectibleIndex = 0;
+
+        int rand = UnityEngine.Random.Range(0, 100);
+
+        for(int i = 0; i < levelData.CollectibleChance.Length; ++i)
+        {
+            int currentRange = 0;
+            int j = -1;
+
+            do
+            {
+                ++j;
+                currentRange += levelData.CollectibleChance[j];
+
+                if (rand <= currentRange) { 
+                    collectibleIndex = i;
+                    return levelData.CollectiblePrefabs[collectibleIndex].GetComponent<Collectible>();
+                }
+
+            } while (j<i);
+
+            //Debug.Log(rand);            
+            //Debug.Log(currentRange);            
+
+        }               
+
+        return levelData.CollectiblePrefabs[collectibleIndex].GetComponent<Collectible>();
+    }
+
+
+    /// <summary>
+    /// Remove a Collectible from the pool
+    /// </summary>   
+    public void RemoveCollectible(Collectible collectibleToRemove)
+    {
+        listCollectibles.Remove(collectibleToRemove);
+    }
+
+
     /// <summary>
     /// Shuffles the order of all the spawners in listSpawners
     /// </summary>   
@@ -144,7 +193,7 @@ public class CollectibleManager : MonoBehaviour
             for (int i=0; i< listSpawners.Count; ++i) {
 
                 //make range larger for Random.Range
-                float maxSpawnRange = (float)subTicks / listSpawners.Count;
+                float maxSpawnRange = (float)_currentSubTickRate / listSpawners.Count;
                 maxSpawnRange *= 1000f;
 
                 float rand = UnityEngine.Random.Range(_currentTimeInTick+1, maxSpawnRange);
@@ -157,16 +206,16 @@ public class CollectibleManager : MonoBehaviour
                 _currentTimeInTick += rand;
                 
                 SpawnCollectible(i);
-                Debug.Log("collectible spawned \n time left in tick: " +( _tickDuration - _currentTimeInTick));
+                //Debug.Log("collectible spawned \n time left in tick: " +( _tickDuration - _currentTimeInTick));
 
                 yield return new WaitForSeconds(rand);
                 
                
             }
 
-            float tickLeftOvers = _tickDuration - _currentTimeInTick;
+            float tickLeftOvers = _currentTickTime - _currentTimeInTick;
 
-            Debug.Log("ALL COLLECTIBLES SPAWNED \n LEFTOVER TIME: " + tickLeftOvers);
+            //Debug.Log("ALL COLLECTIBLES SPAWNED \n LEFTOVER TIME: " + tickLeftOvers);
 
             if (tickLeftOvers > 0){
                 yield return new WaitForSeconds(tickLeftOvers);

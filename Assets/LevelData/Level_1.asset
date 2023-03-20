@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 976d503057d5887478f29cd4578f4e89, type: 3}
+  m_Name: Level_1
+  m_EditorClassIdentifier: 
+  Difficulty: 0
+  StartTime: 0
+  EndTime: 10
+  TickTime: 3
+  SubtickRate: 1
+  SpeedMultipier: 1
+  ScoreMultipier: 1
+  CollectiblePrefabs:
+  - {fileID: 4360475305772627394, guid: 7e6fc71e0a4a10b4b89a1be1f8771590, type: 3}
+  - {fileID: 4360475305772627394, guid: 8bf777fff8755d948af9c3aa0ff30262, type: 3}
+  - {fileID: 4360475305772627394, guid: 656835e05e6ca414ca5703213214a73a, type: 3}
+  - {fileID: 4360475305772627394, guid: 7152dcced71fa6342aafd5db618b04a2, type: 3}
+  - {fileID: 4360475305772627394, guid: 6b71edb6b9cd3df49848a66809015e26, type: 3}
+  CollectibleChance: 3c0000001e000000050000000000000005000000

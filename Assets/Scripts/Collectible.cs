@@ -5,6 +5,8 @@ using UnityEngine;
 public class Collectible : MonoBehaviour
 {
     [SerializeField] public float speed;
+
+    [SerializeField] public float scoreValue;
     public Rigidbody Body { get; private set;}
 
     // Start is called before the first frame update
@@ -16,14 +18,19 @@ public class Collectible : MonoBehaviour
             Debug.LogError("NO RIGID BODY");
         }
     }
+    private void OnDestroy()
+    {
+        CollectibleManager.Instance.RemoveCollectible(this);
+    }
+
     //private void OnTriggerEnter(Collider other)
     //{
-        //PlayerController player = other.GetComponent<PlayerController>();
-        //if (other.GetComponent<PlayerController>())
-        //{
-        //    //AddScore
-        //    //DestroySelf
-        //}
+    //PlayerController player = other.GetComponent<PlayerController>();
+    //if (other.GetComponent<PlayerController>())
+    //{
+    //    //AddScore()
+    //    //DestroySelf()
+    //}
     //}
 
 }

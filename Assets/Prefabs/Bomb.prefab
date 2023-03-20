@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 779054167071723701}
   - component: {fileID: 4355194883401226908}
   m_Layer: 0
-  m_Name: CollectibleA
+  m_Name: Bomb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -64,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d0d13fb079be0d34ea1d0c2cfa1a3f65, type: 2}
+  - {fileID: 2100000, guid: 06d311b687c525641b4d67f816812dd1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
