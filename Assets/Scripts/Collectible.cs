@@ -24,14 +24,20 @@ public class Collectible : MonoBehaviour
         CollectibleManager.Instance.RemoveCollectible(this);
     }
 
+    public void CatchCollectible()
+    {
+        //AddScore()
+        Destroy(gameObject);
+    }
+
     //private void OnTriggerEnter(Collider other)
     //{
-    //PlayerController player = other.GetComponent<PlayerController>();
-    //if (other.GetComponent<PlayerController>())
-    //{
-    //    //AddScore()
-    //    //DestroySelf()
-    //}
+    //    PlayerController player = other.GetComponent<PlayerController>();
+    //    if (other.GetComponent<PlayerController>())
+    //    {
+    //        //AddScore()
+    //        Destroy(gameObject);
+    //    }
     //}
 
 }

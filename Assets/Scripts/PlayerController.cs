@@ -12,29 +12,47 @@ public class PlayerController : MonoBehaviour
 
     private Touch _touch;
 
-    private float _shortestDistance = 1000000000f;
-
     private void Awake()
     {
         Body = GetComponent<Rigidbody>();
     }
     private void Update()
     {
+        GetClosestObj();
+
         if (Input.touchCount > 0)
         {
             _touch = Input.GetTouch(0);
 
             if (_touch.phase == TouchPhase.Began)
             {
-                GetClosestObj();
+                BlinkToObject();
             }
         }
+        _targetCollectible = null;
     }
+    private void BlinkToObject()
+    {
+        if (_targetCollectible != null)
+        {
+            transform.position = _targetCollectible.transform.position;
 
+            Body.velocity = _targetCollectible.Body.velocity;
+
+            _targetCollectible.CatchCollectible();
+
+            _targetCollectible = null;
+        }
+        else
+        {
+            Debug.Log(" no collectible found ");
+        }
+    }
 
     private void GetClosestObj()
     {
         float radiusScale = 0.1f;
+        float _shortestDistance = 1000f;
 
         Collider[] colliders = { };
 
@@ -44,30 +62,23 @@ public class PlayerController : MonoBehaviour
             
             foreach(Collider obj in colliders)
             {
-                float localDistance = (obj.transform.position - transform.position).magnitude;
-
-                if (localDistance < _shortestDistance)
+                Collectible isCollectible = obj.GetComponent<Collectible>();
+                if (isCollectible)
                 {
-                    _shortestDistance = localDistance;
-                    _targetCollectible = obj.GetComponent<Collectible>();
+                    Debug.Log(" found collectible ");
+
+
+                    float localDistance = (obj.transform.position - transform.position).magnitude;
+
+                    if (localDistance <= _shortestDistance)
+                    {
+                        _shortestDistance = localDistance;
+                        _targetCollectible = isCollectible;
+                    }
                 }
             }
-            radiusScale += 0.1f;
-        }
 
-        if (_targetCollectible != null)
-        {
-            transform.position = _targetCollectible.transform.position;
-
-            Body.velocity = _targetCollectible.Body.velocity;
-
-            _targetCollectible = null;
-        }
-        else
-        {
-            Debug.Log(" obj null wtf");
-
-
+            radiusScale += 0.5f;
         }
     }
 
