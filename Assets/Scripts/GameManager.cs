@@ -14,10 +14,8 @@ public class GameManager : MonoBehaviour
 
     private float _currentTime = 0;
 
-    public LayerMask LayerCollectible { get; private set; } = 0;
-
-
-
+    public int CurrentScore { get; private set; } = 0;
+    public float RecordScore { get; private set; } = 0;
 
     public static GameManager Instance { get; private set; }
     private void Awake()
@@ -42,15 +40,10 @@ public class GameManager : MonoBehaviour
             Debug.LogError("NO LEVEL DATA!");
         }
 
-        while (LayerCollectible != CurrentLevelData.CollectiblePrefabs[0].layer)
-        {
-            LayerCollectible = CurrentLevelData.CollectiblePrefabs[0].layer;
-        }
-
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         _currentTime += Time.deltaTime;
 
@@ -62,5 +55,17 @@ public class GameManager : MonoBehaviour
             CollectibleManager.Instance.UpdateLevelData();
         }
 
+    }
+    public void AddScore(int scoreToAdd)
+    {
+        CurrentScore+= scoreToAdd;
+    }
+
+    public void RestartLevel()
+    {
+        CollectibleManager.Instance.DestroyAllCollectibles();
+        CurrentLevelData = AllLevelData[0];
+        CurrentScore = 0;
+        _currentTime = 0;
     }
 }

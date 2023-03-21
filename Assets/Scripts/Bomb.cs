@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class Bomb : Collectible
 {
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //PlayerController player = other.GetComponent<PlayerController>();
-    //if (other.GetComponent<PlayerController>())
-    //{
-    //    //DamagePlayer()
-    //    //DestroySelf()
-    //}
-    //}
+    private void OnTriggerEnter(Collider other)
+    {
+        PlayerController player = other.GetComponent<PlayerController>();
+        if (other.GetComponent<PlayerController>())
+        {
+            player.HurtPlayer();
+
+            Destroy(gameObject);
+        }
+    }
 }

@@ -6,7 +6,7 @@ public class Collectible : MonoBehaviour
 {
     [SerializeField] public float speed;
 
-    [SerializeField] public float scoreValue;
+    [SerializeField] public int scoreValue;
     public Rigidbody Body { get; private set;}
 
     // Start is called before the first frame update
@@ -24,20 +24,14 @@ public class Collectible : MonoBehaviour
         CollectibleManager.Instance.RemoveCollectible(this);
     }
 
-    public void CatchCollectible()
+    private void OnTriggerEnter(Collider other)
     {
-        //AddScore()
-        Destroy(gameObject);
+        PlayerController player = other.GetComponent<PlayerController>();
+        if (other.GetComponent<PlayerController>())
+        {
+            GameManager.Instance.AddScore(scoreValue);
+            Destroy(gameObject);
+        }
     }
-
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    PlayerController player = other.GetComponent<PlayerController>();
-    //    if (other.GetComponent<PlayerController>())
-    //    {
-    //        //AddScore()
-    //        Destroy(gameObject);
-    //    }
-    //}
 
 }

@@ -12,7 +12,8 @@ public class CollectibleManager : MonoBehaviour
     [Header("SPAWNER AND CENTER TRANSFORMS")]
     [Min(1)]
     [SerializeField] private List<Transform> listSpawners = new List<Transform>();
-    [SerializeField] private Transform _centerPoint;
+
+    [SerializeField] public Transform _centerPoint;
 
     [Space(20)]
 
@@ -36,7 +37,7 @@ public class CollectibleManager : MonoBehaviour
 
     private float _currentTimeInTick = 0f;
 
-    private List<Collectible> listCollectibles = new List<Collectible>();
+    public List<Collectible> ListCollectibles { get; private set; } = new List<Collectible>();
     private int _maxSizeCollectiblePool = 20;
 
 
@@ -103,12 +104,12 @@ public class CollectibleManager : MonoBehaviour
         //set the rigidbody velocity
         spawnedCollectible.Body.velocity = vel;
 
-        if(listCollectibles.Count >= _maxSizeCollectiblePool) {
-            Destroy(listCollectibles[0]);
-            listCollectibles.RemoveAt(0);
+        if(ListCollectibles.Count >= _maxSizeCollectiblePool) {
+            Destroy(ListCollectibles[0]);
+            ListCollectibles.RemoveAt(0);
         }
 
-        listCollectibles.Add(spawnedCollectible);
+        ListCollectibles.Add(spawnedCollectible);
     }
 
     /// <summary>
@@ -153,7 +154,15 @@ public class CollectibleManager : MonoBehaviour
     /// </summary>   
     public void RemoveCollectible(Collectible collectibleToRemove)
     {
-        listCollectibles.Remove(collectibleToRemove);
+        ListCollectibles.Remove(collectibleToRemove);
+    }
+
+    public void DestroyAllCollectibles()
+    {
+        foreach(Collectible collectible in ListCollectibles) {         
+            Destroy(collectible.gameObject);
+        }
+        ListCollectibles.Clear();
     }
 
 

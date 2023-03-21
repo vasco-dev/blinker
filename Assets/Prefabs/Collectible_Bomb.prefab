@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: -8524548592059356922}
   - component: {fileID: 6075303394495004509}
   - component: {fileID: 779054167071723701}
-  - component: {fileID: 4355194883401226908}
+  - component: {fileID: -253381347248249191}
   m_Layer: 6
-  m_Name: Bomb
+  m_Name: Collectible_Bomb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -115,7 +115,7 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.75
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &4355194883401226908
+--- !u!114 &-253381347248249191
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -124,8 +124,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 4360475305772627394}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9cff342adbeade244b2f934c1281eb94, type: 3}
+  m_Script: {fileID: 11500000, guid: 8d268edce7f04b34aba1bd26af361228, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
-  scoreValue: 1
+  speed: 2
+  scoreValue: 0
