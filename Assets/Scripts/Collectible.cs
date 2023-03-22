@@ -27,7 +27,7 @@ public class Collectible : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         PlayerController player = other.GetComponent<PlayerController>();
-        if (other.GetComponent<PlayerController>())
+        if(other.GetComponent<PlayerController>())
         {
             GameManager.Instance.AddScore(scoreValue);
             Destroy(gameObject);

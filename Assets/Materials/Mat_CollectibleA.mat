@@ -10,11 +10,12 @@ Material:
   m_Name: Mat_CollectibleA
   m_Shader: {fileID: 4800000, guid: 8d2bb70cbf9db8d4da26e15b26e74248, type: 3}
   m_Parent: {fileID: 2100000, guid: fbf6daa5ca81b53429ab27596b9a207f, type: 2}
-  m_ModifiedSerializedProperties: 0
+  m_ModifiedSerializedProperties: 2
   m_ValidKeywords:
   - _EMISSION
+  - _RECEIVE_SHADOWS_OFF
   m_InvalidKeywords: []
-  m_LightmapFlags: 4
+  m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -28,9 +29,9 @@ Material:
     m_Ints: []
     m_Floats: []
     m_Colors:
-    - _BaseColor: {r: 0.7826952, g: 1, b: 0, a: 1}
-    - _Color: {r: 0.7826952, g: 1, b: 0, a: 1}
-    - _EmissionColor: {r: 1, g: 0.518885, b: 0, a: 1}
+    - _BaseColor: {r: 1, g: 0.6640479, b: 0, a: 1}
+    - _Color: {r: 1, g: 0.6640479, b: 0, a: 1}
+    - _EmissionColor: {r: 10.680627, g: 5.5877953, b: 0, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &7109332204968940289
 MonoBehaviour:

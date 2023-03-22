@@ -17,7 +17,7 @@ MonoBehaviour:
   EndTime: 60
   TickTime: 3
   SubtickRate: 1
-  SpeedMultipier: 1
+  SpeedMultipier: 1.5
   ScoreMultipier: 1
   CollectiblePrefabs:
   - {fileID: 4360475305772627394, guid: 7e6fc71e0a4a10b4b89a1be1f8771590, type: 3}

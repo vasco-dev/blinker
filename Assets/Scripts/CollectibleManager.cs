@@ -38,7 +38,7 @@ public class CollectibleManager : MonoBehaviour
     private float _currentTimeInTick = 0f;
 
     public List<Collectible> ListCollectibles { get; private set; } = new List<Collectible>();
-    private int _maxSizeCollectiblePool = 20;
+    private int _maxSizeCollectiblePool = 50;
 
 
     public static CollectibleManager Instance { get; private set; }
@@ -100,6 +100,7 @@ public class CollectibleManager : MonoBehaviour
         Vector3 vel = (randPos - spawnedCollectible.transform.position).normalized;
 
         vel *= spawnedCollectible.speed;
+        vel *= GameManager.Instance.CurrentLevelData.SpeedMultipier;
 
         //set the rigidbody velocity
         spawnedCollectible.Body.velocity = vel;
@@ -107,6 +108,7 @@ public class CollectibleManager : MonoBehaviour
         if(ListCollectibles.Count >= _maxSizeCollectiblePool) {
             Destroy(ListCollectibles[0]);
             ListCollectibles.RemoveAt(0);
+            Debug.Log("WTF");
         }
 
         ListCollectibles.Add(spawnedCollectible);

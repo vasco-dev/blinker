@@ -47,7 +47,7 @@ public class GameManager : MonoBehaviour
     {
         _currentTime += Time.deltaTime;
 
-        if(_currentTime > CurrentLevelData.EndTime && CurrentLevelIndex < AllLevelData.Length)
+        if(_currentTime > CurrentLevelData.EndTime && CurrentLevelIndex < AllLevelData.Length-1)
         {
             ++CurrentLevelIndex;
             CurrentLevelData = AllLevelData[CurrentLevelIndex];   
