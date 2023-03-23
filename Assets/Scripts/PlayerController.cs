@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
@@ -9,30 +10,38 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private int _maxHP = 1;    
     public Rigidbody Body { get; private set; } = null;
 
+    private PlayerInputActions _input;
+
 
     private Collectible _targetCollectible = null;
-
-    private Touch _touch;
 
     private void Awake()
     {
         Body = GetComponent<Rigidbody>();
+
+        if (_input == null){
+            _input = new PlayerInputActions();
+
+            Debug.Log("" + _input);
+        }  
+    }
+    private void Start()
+    {
+        _input.Enable();
+        _input.Touch.Tap.started += PlayerTap;
     }
     private void Update()
     {
         GetClosestObj();
+    }
 
-        if (Input.touchCount > 0)
-        {
-            _touch = Input.GetTouch(0);
-
-            if (_touch.phase == TouchPhase.Began)
-            {
-                BlinkToObject();
-            }
-        }
+    public void PlayerTap(InputAction.CallbackContext obj)
+    {
+        BlinkToObject();
         _targetCollectible = null;
     }
+
+
     public void HurtPlayer()
     {
         --_maxHP; 
@@ -66,6 +75,7 @@ public class PlayerController : MonoBehaviour
     {
         if (CollectibleManager.Instance.ListCollectibles.Count > 0)
         {
+            _targetCollectible = null;
 
             float radiusScale = 0.1f;
             float _shortestDistance = 1000f;
@@ -93,10 +103,20 @@ public class PlayerController : MonoBehaviour
 
                             _particles.transform.position = _targetCollectible.transform.position + Vector3.down;
                             _particles.GetComponent<MeshFilter>().mesh = _targetCollectible.GetComponent<MeshFilter>().mesh;
+
+                            Debug.Log("found shortest distance");
                         }
                     }
                 }
-
+                if (_targetCollectible)
+                {
+                    _particles.transform.position = _targetCollectible.transform.position + Vector3.down;
+                }
+                else
+                {
+                    _particles.transform.position = transform.position;
+                    _particles.GetComponent<MeshFilter>().mesh = GetComponent<MeshFilter>().mesh;
+                }
                 radiusScale += 0.5f;
             }
         }

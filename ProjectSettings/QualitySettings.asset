@@ -81,7 +81,7 @@ QualitySettings:
       type: 2}
     excludedTargetPlatforms: []
   - serializedVersion: 2
-    name: High Fidelity
+    name: WebGL
     pixelLightCount: 2
     shadows: 2
     shadowResolution: 1
@@ -94,16 +94,16 @@ QualitySettings:
     shadowmaskMode: 1
     skinWeights: 255
     textureQuality: 0
-    anisotropicTextures: 2
-    antiAliasing: 4
+    anisotropicTextures: 0
+    antiAliasing: 0
     softParticles: 0
     softVegetation: 1
     realtimeReflectionProbes: 1
     billboardsFaceCameraPosition: 1
-    vSyncCount: 1
+    vSyncCount: 0
     lodBias: 2
     maximumLODLevel: 0
-    streamingMipmapsActive: 0
+    streamingMipmapsActive: 1
     streamingMipmapsAddAllCameras: 1
     streamingMipmapsMemoryBudget: 512
     streamingMipmapsRenderersPerFrame: 512
@@ -114,23 +114,26 @@ QualitySettings:
     asyncUploadBufferSize: 16
     asyncUploadPersistentBuffer: 1
     resolutionScalingFixedDPIFactor: 1
-    customRenderPipeline: {fileID: 11400000, guid: 7b7fd9122c28c4d15b667c7040e3b3fd,
+    customRenderPipeline: {fileID: 11400000, guid: 56bde8eb43897324c954599ba567d156,
       type: 2}
-    excludedTargetPlatforms: []
+    excludedTargetPlatforms:
+    - Android
+    - Server
+    - Standalone
   m_PerPlatformDefaultQuality:
     Android: 1
-    CloudRendering: 2
-    GameCoreScarlett: 2
-    GameCoreXboxOne: 2
-    Lumin: 2
+    CloudRendering: 1
+    GameCoreScarlett: 1
+    GameCoreXboxOne: 1
+    Lumin: 1
     Nintendo Switch: 1
-    PS4: 2
-    PS5: 2
+    PS4: 1
+    PS5: 1
     Server: 0
-    Stadia: 2
-    Standalone: 2
+    Stadia: 1
+    Standalone: 1
     WebGL: 1
-    Windows Store Apps: 2
-    XboxOne: 2
+    Windows Store Apps: 1
+    XboxOne: 1
     iPhone: 1
     tvOS: 1

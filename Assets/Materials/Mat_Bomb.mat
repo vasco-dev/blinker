@@ -21,13 +21,13 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Mat_Bomb
-  m_Shader: {fileID: 4800000, guid: 8d2bb70cbf9db8d4da26e15b26e74248, type: 3}
+  m_Shader: {fileID: 4800000, guid: 650dd9526735d5b46b79224bc6e94025, type: 3}
   m_Parent: {fileID: 2100000, guid: fbf6daa5ca81b53429ab27596b9a207f, type: 2}
   m_ModifiedSerializedProperties: 2
-  m_ValidKeywords:
+  m_ValidKeywords: []
+  m_InvalidKeywords:
   - _EMISSION
   - _RECEIVE_SHADOWS_OFF
-  m_InvalidKeywords: []
   m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -42,7 +42,7 @@ Material:
     m_Ints: []
     m_Floats: []
     m_Colors:
-    - _BaseColor: {r: 1, g: 0.54328525, b: 0, a: 1}
-    - _Color: {r: 1, g: 0.5432852, b: 0, a: 1}
+    - _BaseColor: {r: 1, g: 0, b: 0.063920975, a: 1}
+    - _Color: {r: 1, g: 0, b: 0.06392095, a: 1}
     - _EmissionColor: {r: 32, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []

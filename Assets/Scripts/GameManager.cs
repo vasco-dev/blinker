@@ -42,15 +42,14 @@ public class GameManager : MonoBehaviour
 
     }
 
-    // Update is called once per frame
     private void Update()
     {
         _currentTime += Time.deltaTime;
 
-        if(_currentTime > CurrentLevelData.EndTime && CurrentLevelIndex < AllLevelData.Length-1)
+        if (_currentTime > CurrentLevelData.EndTime && CurrentLevelIndex < AllLevelData.Length - 1)
         {
             ++CurrentLevelIndex;
-            CurrentLevelData = AllLevelData[CurrentLevelIndex];   
+            CurrentLevelData = AllLevelData[CurrentLevelIndex];
 
             CollectibleManager.Instance.UpdateLevelData();
         }
