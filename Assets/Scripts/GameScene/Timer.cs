@@ -8,15 +8,16 @@ public class Timer : MonoBehaviour
     private float __tempoAtualF;
     private int __tempoAtualInt;
     private int __tempoLimite;
+    private int __difficulty;
+    public int __tempoRestante;
     private int _easydifficulty_time = 10;
     private int _mediumdifficulty_time = 35;
+    public bool __hasSceneLoaded {get; set;}
 
     [SerializeField] private TextMeshProUGUI _timerText;
-    private int __difficulty;
-
-    public bool __hasSceneLoaded;
-
     
+    private MenuManager _menuManager;
+
     private void Awake()
     {
         Time.timeScale = 1f;
@@ -33,7 +34,7 @@ public class Timer : MonoBehaviour
     {
         __tempoAtualF = __tempoAtualF + Time.deltaTime;
         TimerFunction();
-        Debug.Log("Nível Atual: " + __difficulty);
+        //Debug.Log("Nível Atual: " + __difficulty);
     }
 
     private void TimerFunction()
@@ -41,21 +42,19 @@ public class Timer : MonoBehaviour
         //Debug.Log(__hasSceneLoaded);
         if (__hasSceneLoaded == true)
         {
-            //__tempoAtualF += Time.deltaTime;
             __tempoAtualInt = Mathf.RoundToInt(__tempoAtualF);
+            //MenuManager _menuManager = GetComponent<MenuManager>();
 
             if (__tempoAtualInt > __tempoLimite)
             {
-                //__gameover = true;
+                MenuManager _menuManager = GetComponent<MenuManager>();
+                _menuManager.__gameover = true;
             }
             else
             {
-                int __tempoRestante = __tempoLimite - __tempoAtualInt;
+                __tempoRestante = __tempoLimite - __tempoAtualInt;
                 _timerText.text = __tempoRestante.ToString();
-                /*if (__gameover == false)
-                {
-                    _timerText.text = __tempoRestante.ToString();
-                }*/
+
                 if (__tempoLimite - __tempoRestante <= _easydifficulty_time)
                 {
                     __difficulty = 1;

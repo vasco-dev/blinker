@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class HighScoreDisplay : MonoBehaviour
 {
+
     public Text nameText;
     public Text scoreText;
 
