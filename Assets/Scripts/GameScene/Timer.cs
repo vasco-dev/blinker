@@ -57,10 +57,10 @@ public class Timer : MonoBehaviour
 
                 if (__tempoLimite - __tempoRestante <= _easydifficulty_time)
                 {
-                    __difficulty = 1;
+                    __difficulty = 0;
                 }
-                else if (__tempoLimite - __tempoRestante <= (_mediumdifficulty_time + _easydifficulty_time)) __difficulty = 2;
-                else __difficulty = 3;
+                else if (__tempoLimite - __tempoRestante <= (_mediumdifficulty_time + _easydifficulty_time)) __difficulty = 1;
+                else __difficulty = 2;
             }
         }
         

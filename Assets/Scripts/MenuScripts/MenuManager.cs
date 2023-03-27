@@ -24,7 +24,7 @@ public class MenuManager : MonoBehaviour
     {
         SceneManager.LoadScene(_gameStartScene);
         Timer _timer = GetComponent<Timer>();
-        Debug.Log(_timer);
+        //Debug.Log(_timer);
         _timer.__hasSceneLoaded = true;
         __gameover = false;
     }
