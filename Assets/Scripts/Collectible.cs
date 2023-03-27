@@ -7,18 +7,20 @@ public class Collectible : MonoBehaviour
     [SerializeField] public float speed;
 
     [SerializeField] public int scoreValue;
-    public Rigidbody Body { get; private set;}
 
-    // Start is called before the first frame update
+    public Rigidbody Body { get; private set; }
+
     void Awake()
     {
         //set rigidbody and throw error if there is none
         Body = GetComponent<Rigidbody>();
 
-        if(Body == null){
+        if (Body == null)
+        {
             Debug.LogError("NO RIGID BODY");
         }
     }
+
     private void OnDestroy()
     {
         CollectibleManager.Instance.RemoveCollectible(this);

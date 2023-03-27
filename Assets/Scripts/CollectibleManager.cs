@@ -38,7 +38,7 @@ public class CollectibleManager : MonoBehaviour
     private float _currentTimeInTick = 0f;
 
     public List<Collectible> ListCollectibles { get; private set; } = new List<Collectible>();
-    private int _maxSizeCollectiblePool = 50;
+    private int _maxSizeCollectiblePool = 10;
 
 
     public static CollectibleManager Instance { get; private set; }

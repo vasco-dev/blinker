@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -18,6 +19,12 @@ public class GameManager : MonoBehaviour
     public float RecordScore { get; private set; } = 0;
 
     public static GameManager Instance { get; private set; }
+
+
+    private int _frames = 0;
+    private float _frameRate = 0;
+    [SerializeField ] private TextMeshProUGUI _fpsText;
+
     private void Awake()
     {
         //siingleton
@@ -53,6 +60,12 @@ public class GameManager : MonoBehaviour
 
             CollectibleManager.Instance.UpdateLevelData();
         }
+
+        //++_frames;
+        //_frameRate = Mathf.RoundToInt(_frames / _currentTime);
+        //_fpsText.text= _frameRate.ToString();
+
+
 
     }
     public void AddScore(int scoreToAdd)

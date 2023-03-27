@@ -61,7 +61,7 @@ public class PlayerController : MonoBehaviour
         {
             transform.position = _targetCollectible.transform.position;
 
-            Body.velocity = _targetCollectible.Body.velocity;
+            Body.velocity = _targetCollectible.GetComponent<Rigidbody>().velocity;
 
             _targetCollectible = null;
         }
@@ -103,8 +103,10 @@ public class PlayerController : MonoBehaviour
 
                             _particles.transform.position = _targetCollectible.transform.position + Vector3.down;
                             _particles.GetComponent<MeshFilter>().mesh = _targetCollectible.GetComponent<MeshFilter>().mesh;
-
-                            Debug.Log("found shortest distance");
+                            
+                            //#if UNITY_EDITOR
+                            //    Debug.Log("found shortest distance");
+                            //#endif
                         }
                     }
                 }
@@ -125,6 +127,15 @@ public class PlayerController : MonoBehaviour
             _particles.transform.position = transform.position;
             _particles.GetComponent<MeshFilter>().mesh = GetComponent<MeshFilter>().mesh;
 
+        }
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        GameObject collectible = other.gameObject;
+        if (collectible.layer == LayerMask.NameToLayer("Collectible"))
+        {
+            GameManager.Instance.AddScore(10);
+            Destroy(collectible);
         }
     }
 
