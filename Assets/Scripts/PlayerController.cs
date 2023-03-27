@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour
         _input.Enable();
         _input.Touch.Tap.started += PlayerTap;
     }
-    private void Update()
+    private void FixedUpdate()
     {
         GetClosestObj();
     }
@@ -82,7 +82,7 @@ public class PlayerController : MonoBehaviour
 
             Collider[] colliders = { };
 
-            while (_targetCollectible == null && radiusScale < 1000f)
+            while (_targetCollectible == null && radiusScale < 50f)
             {
                 colliders = Physics.OverlapSphere(transform.position, radiusScale, Physics.AllLayers, QueryTriggerInteraction.UseGlobal);
 
