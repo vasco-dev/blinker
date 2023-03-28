@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
         if (_input == null){
             _input = new PlayerInputActions();
 
-            Debug.Log("" + _input);
+            //Debug.Log("" + _input);
         }  
     }
     private void Start()
