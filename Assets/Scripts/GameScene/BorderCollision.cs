@@ -9,18 +9,18 @@ public class BorderCollision : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        PlayerController _player = other.GetComponent<PlayerController>();
 
+        other.TryGetComponent<Collectible>(out Collectible _collectible);
+        if (_collectible != null)
+        {
+            _collectible.gameObject.SetActive(false);
+            Destroy(_collectible.gameObject);
+        }
+
+        other.TryGetComponent<PlayerController>(out PlayerController _player);
         if (_player != null)
         {
             _player.HurtPlayer();
-        }
-
-        Collectible _collectible = other.GetComponent<Collectible>();
-
-        if (_collectible != null)
-        {
-            Destroy(_collectible);
         }
     }
 }

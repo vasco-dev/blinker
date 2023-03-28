@@ -24,12 +24,13 @@ public class Collectible : MonoBehaviour
     private void OnDestroy()
     {
         CollectibleManager.Instance.RemoveCollectible(this);
+        Destroy(gameObject);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        PlayerController player = other.GetComponent<PlayerController>();
-        if(other.GetComponent<PlayerController>())
+        other.TryGetComponent<PlayerController>(out PlayerController _player);
+        if (_player != null)
         {
             GameManager.Instance.AddScore(scoreValue);
             Destroy(gameObject);

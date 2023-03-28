@@ -6,10 +6,10 @@ public class Bomb : Collectible
 {
     private void OnTriggerEnter(Collider other)
     {
-        PlayerController player = other.GetComponent<PlayerController>();
-        if (other.GetComponent<PlayerController>())
+        other.TryGetComponent<PlayerController>(out PlayerController _player);
+        if (_player != null)
         {
-            player.HurtPlayer();
+            _player.HurtPlayer();
 
             Destroy(gameObject);
         }

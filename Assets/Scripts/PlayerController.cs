@@ -61,7 +61,7 @@ public class PlayerController : MonoBehaviour
         {
             transform.position = _targetCollectible.transform.position;
 
-            Body.velocity = _targetCollectible.GetComponent<Rigidbody>().velocity;
+            Body.velocity = _targetCollectible.Body.velocity;
 
             _targetCollectible = null;
         }
@@ -88,8 +88,8 @@ public class PlayerController : MonoBehaviour
 
                 foreach (Collider obj in colliders)
                 {
-                    Collectible isCollectible = obj.GetComponent<Collectible>();
-                    if (isCollectible)
+                    obj.TryGetComponent<Collectible>(out Collectible isCollectible);
+                    if (isCollectible != null)
                     {
                         //Debug.Log(" found collectible ");
 
@@ -129,16 +129,5 @@ public class PlayerController : MonoBehaviour
 
         }
     }
-    private void OnTriggerEnter(Collider other)
-    {
-        GameObject collectible = other.gameObject;
-        if (collectible.layer == LayerMask.NameToLayer("Collectible"))
-        {
-            GameManager.Instance.AddScore(10);
-            Destroy(collectible);
-        }
-    }
-
-
 
 }
