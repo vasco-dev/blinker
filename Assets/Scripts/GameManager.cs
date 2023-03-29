@@ -12,22 +12,17 @@ public class GameManager : MonoBehaviour
 
     public LevelData CurrentLevelData { get; private set; }
     public int CurrentLevelIndex { get; private set; }
-
-    private float _currentTime = 0;
-
     public int CurrentScore { get; private set; } = 0;
-    public float RecordScore { get; private set; } = 0;
+    public int HighScore { get; private set; } = 0;
+
+
+    //[SerializeField ] private TextMeshProUGUI _fpsText;
 
     public static GameManager Instance { get; private set; }
 
-
-    private int _frames = 0;
-    private float _frameRate = 0;
-    [SerializeField ] private TextMeshProUGUI _fpsText;
-
     private void Awake()
     {
-        //siingleton
+        //Singleton
         if (Instance != null && Instance != this)
         {
             Destroy(this);
@@ -49,35 +44,61 @@ public class GameManager : MonoBehaviour
 
     }
 
-    private void Update()
+    private void OnEnable()
     {
-        _currentTime += Time.deltaTime;
-
-        if (_currentTime > CurrentLevelData.EndTime && CurrentLevelIndex < AllLevelData.Length - 1)
+        IsRunning = true;
+    }
+    public void UpdateCurrentLevelData()
+    {
+        if (CurrentLevelIndex < AllLevelData.Length - 1)
         {
             ++CurrentLevelIndex;
             CurrentLevelData = AllLevelData[CurrentLevelIndex];
 
             CollectibleManager.Instance.UpdateLevelData();
         }
-
-        //++_frames;
-        //_frameRate = Mathf.RoundToInt(_frames / _currentTime);
-        //_fpsText.text= _frameRate.ToString();
-
-
-
+        else
+        {
+            EndGame();
+        }
     }
+    public float GetCurrentLevelEndTime()
+    {
+        return CurrentLevelData.EndTime;
+    }
+
     public void AddScore(int scoreToAdd)
     {
         CurrentScore+= scoreToAdd;
+        ScoreManager.Instance.UpdateScoreText(CurrentScore);
+
+        if(CurrentScore > HighScore)
+        {
+            HighScore = CurrentScore;
+            ScoreManager.Instance.UpdateHighScore(HighScore);
+
+        }
+
     }
 
-    public void RestartLevel()
+    public void RestartGame()
     {
-        CollectibleManager.Instance.DestroyAllCollectibles();
-        CurrentLevelData = AllLevelData[0];
+        MenuManager.Instance.EndGame();
+
         CurrentScore = 0;
-        _currentTime = 0;
+        ScoreManager.Instance.UpdateScoreText(CurrentScore);    
+
+        CollectibleManager.Instance.DestroyAllCollectibles();
+
+        CurrentLevelData = AllLevelData[0];
+
+        CurrentScore = 0;
+
+        Timer.Instance.RestartGame();
+    }
+    public void EndGame()
+    {
+        IsRunning = false;
+        MenuManager.Instance.EndGame();
     }
 }

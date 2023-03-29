@@ -5,42 +5,38 @@ using UnityEngine.SceneManagement;
 
 public class MenuManager : MonoBehaviour
 {
-    public int _gameStartScene = 1;
-    private int _gameEndScene = 2;
-    //public Timer _timer;
-    public bool __gameover { get; set; }
+    [SerializeField]
+    private int _gameStartScene = 1;
 
-    private void Update()
+    [SerializeField]
+    private int _gameEndScene = 2;
+    public static MenuManager Instance { get; private set; }
+
+    private void Awake()
     {
-        CheckEndGame();
+        //Singleton
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
     }
 
     public void QuitGame()
     {
         Application.Quit(); 
-        //print("O botao funciona");
     }
+
     public void StartGame()
     {
         SceneManager.LoadScene(_gameStartScene);
-        Timer _timer = GetComponent<Timer>();
-        //Debug.Log(_timer);
-        _timer.__hasSceneLoaded = true;
-        __gameover = false;
     }
 
-    public void RestartGame()
+    public void EndGame()
     {
-        SceneManager.LoadScene(_gameStartScene);
-        //print("O botao funciona");
-    }
-
-    public void CheckEndGame()
-    {
-        if (__gameover == true)
-        {
-            //_gameover = true;
-            SceneManager.LoadScene(_gameEndScene);
-        }
+        SceneManager.LoadScene(_gameEndScene);
     }
 }

@@ -5,69 +5,70 @@ using TMPro;
 
 public class Timer : MonoBehaviour
 {
-    private float __tempoAtualF;
-    private int __tempoAtualInt;
-    private int __tempoLimite;
-    private int __difficulty;
-    public int __tempoRestante;
-    private int _easydifficulty_time = 10;
-    private int _mediumdifficulty_time = 35;
-    public bool __hasSceneLoaded {get; set;}
+
+    //should be always 0
+    private float _currentTime = 0f;
+    //needs to be lower than _currentTime to be set in the code
+    private float _currentLevelEnd = -1f;
 
     [SerializeField] private TextMeshProUGUI _timerText;
-    
-    private MenuManager _menuManager;
+    public static Timer Instance { get; private set; }
 
     private void Awake()
     {
-        Time.timeScale = 1f;
-        __tempoLimite = 60;
-        __hasSceneLoaded = false;
-    }
-    // quando o objeto se tornar ativo significa que a cena carregou
-    private void OnEnable()
-    {
-        __hasSceneLoaded = true;        
-    }
-
-    private void Update()
-    {
-        __tempoAtualF = __tempoAtualF + Time.deltaTime;
-        TimerFunction();
-        //Debug.Log("Nível Atual: " + __difficulty);
-    }
-
-    private void TimerFunction()
-    {
-        //Debug.Log(__hasSceneLoaded);
-        if (__hasSceneLoaded == true)
+        if (Instance != null && Instance != this)
         {
-            __tempoAtualInt = Mathf.RoundToInt(__tempoAtualF);
-            //MenuManager _menuManager = GetComponent<MenuManager>();
-
-            if (__tempoAtualInt > __tempoLimite)
-            {
-                MenuManager _menuManager = GetComponent<MenuManager>();
-                _menuManager.__gameover = true;
-            }
-            else
-            {
-                __tempoRestante = __tempoLimite - __tempoAtualInt;
-                _timerText.text = __tempoRestante.ToString();
-
-                if (__tempoLimite - __tempoRestante <= _easydifficulty_time)
-                {
-                    __difficulty = 0;
-                }
-                else if (__tempoLimite - __tempoRestante <= (_mediumdifficulty_time + _easydifficulty_time)) __difficulty = 1;
-                else __difficulty = 2;
-            }
+            Destroy(this);
         }
-        
+        else
+        {
+            Instance = this;
+        }
+
+        if (_timerText == null)
+        {
+            _timerText = GetComponent<TextMeshProUGUI>();
+        }
+
     }
-    
-    public int GetCurrentLevel()
+    private void Start()
     {
-        return __difficulty;
+        StartCoroutine(TimerFunction());
+    }
+
+
+    public void RestartGame()
+    {
+        _currentTime = 0f;
+        _currentLevelEnd = -1f;
+    }
+
+    private IEnumerator TimerFunction()
+    {
+        while (GameManager.Instance.IsRunning)
+        {
+            if (_currentLevelEnd <= 0f)
+            {
+                _currentTime = 0f;
+                _currentLevelEnd = GameManager.Instance.GetCurrentLevelEndTime();
+            }
+
+            _currentTime += Time.deltaTime;
+
+            if (_currentTime >= _currentLevelEnd)
+            {                
+                GameManager.Instance.UpdateCurrentLevelData();
+                _currentLevelEnd = GameManager.Instance.GetCurrentLevelEndTime();
+            }
+
+            _timerText.text = ((int)_currentTime).ToString();
+
+            yield return new WaitForFixedUpdate();
+        }
+    }
+
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
     }
 }

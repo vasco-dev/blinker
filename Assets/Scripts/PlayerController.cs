@@ -47,10 +47,12 @@ public class PlayerController : MonoBehaviour
         --_maxHP; 
         if (_maxHP <= 0)
         {
+            _maxHP = 1;
+
             transform.position = CollectibleManager.Instance._centerPoint.position;
             Body.velocity = Vector3.zero;
 
-            GameManager.Instance.RestartLevel();
+            GameManager.Instance.RestartGame();
         }
     }
 
