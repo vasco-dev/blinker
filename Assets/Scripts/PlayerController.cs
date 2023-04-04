@@ -5,15 +5,16 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private GameObject _particles;
 
     [SerializeField] private int _maxHP = 1;    
     public Rigidbody Body { get; private set; } = null;
 
     private PlayerInputActions _input;
 
+    private int _targetNumber = 0;
 
-    private Collectible _targetCollectible = null;
+    private Collectible _closestCollectible = null;
+    private Collectible _nextCollectible = null;
 
     private void Awake()
     {
@@ -36,19 +37,13 @@ public class PlayerController : MonoBehaviour
     }
     private void LateUpdate()
     {
-        if (_targetCollectible != null){
-            _particles.transform.position = _targetCollectible.transform.position + Vector3.down;
-        }
-        else{
-            _particles.transform.position = transform.position + Vector3.down;
-        }
+        UpdateFeedback();
     }
 
     public void PlayerTap(InputAction.CallbackContext obj)
     {
-        Debug.Log("TAPPED");
         BlinkToObject();
-        _targetCollectible = null;
+        _closestCollectible = null;
     }
 
 
@@ -69,14 +64,13 @@ public class PlayerController : MonoBehaviour
 
     private void BlinkToObject()
     {
-        Debug.Log("OBJ: " + _targetCollectible.name);
-        if (_targetCollectible != null)
+        if (_closestCollectible != null)
         {
             Body.velocity = Vector3.zero;
 
-            Body.velocity = _targetCollectible.Body.velocity;
+            Body.velocity = _closestCollectible.Body.velocity;
 
-            transform.position = _targetCollectible.transform.position;
+            transform.position = _closestCollectible.transform.position;
 
             Debug.Log("TELEPORTED");
 
@@ -87,35 +81,59 @@ public class PlayerController : MonoBehaviour
     {
         if (CollectibleManager.Instance.ListCollectibles.Count > 0)
         {
-            _targetCollectible = null;
+            _closestCollectible = null;
+            _nextCollectible = null;
 
             float radiusScale = 0.1f;
-            float _shortestDistance = 1000f;
 
             Collider[] colliders;
 
-            while (_targetCollectible == null && radiusScale < 50f)
+            while (_targetNumber < 2 && radiusScale < 50f)
             {
                 colliders = Physics.OverlapSphere(transform.position, radiusScale, Physics.AllLayers, QueryTriggerInteraction.UseGlobal);
 
                 foreach (Collider obj in colliders)
                 {
-                    obj.TryGetComponent<Collectible>(out Collectible isCollectible);
-                    if (isCollectible != null)
+                    obj.TryGetComponent<Collectible>(out Collectible checkCollectible);
+
+                    if (checkCollectible != null)
                     {
-                        //Debug.Log(" found collectible ");
-
-                        float localDistance = (obj.transform.position - transform.position).magnitude;
-
-                        if (localDistance <= _shortestDistance)
-                        {
-                            _shortestDistance = localDistance;
-                            _targetCollectible = isCollectible;
+                        if (_closestCollectible == null)
+                        { 
+                            _closestCollectible = checkCollectible;
+                            ++_targetNumber;
+                        } 
+                        else if(checkCollectible != _closestCollectible)
+                        { 
+                            _nextCollectible = checkCollectible;
+                            ++_targetNumber;
                         }
                     }
                 }
                 radiusScale += 0.5f;
             }
+
+            _targetNumber = 0;
+        }
+    }
+
+    private void UpdateFeedback()
+    {
+        if (_closestCollectible != null)
+        {
+            CollectibleManager.Instance.SetClosestObj(_closestCollectible.transform);
+        }
+        else
+        {
+            CollectibleManager.Instance.SetClosestObj(transform);
+        }
+        if (_nextCollectible != null)
+        {
+            CollectibleManager.Instance.SetNextObj(_nextCollectible.transform);
+        }
+        else
+        {
+            CollectibleManager.Instance.SetNextObj(transform);
         }
     }
 

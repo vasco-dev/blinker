@@ -23,6 +23,13 @@ public class CollectibleManager : MonoBehaviour
     /// </summary>
     [SerializeField] private int spawnRandOffsetScale = 500;
 
+    [Space(20)]
+
+    [Header("FEEDBACK")]
+
+    [SerializeField] private GameObject _particlesClosest;
+    [SerializeField] private GameObject _particlesNext;
+
     /// <summary>
     /// duration of each tick, in seconds
     /// </summary>
@@ -183,6 +190,15 @@ public class CollectibleManager : MonoBehaviour
             
             listSpawners[randIndex] = spawner;
         }
+    }
+
+    public void SetClosestObj(Transform closestTransform)
+    {
+        _particlesClosest.transform.position = closestTransform.position + Vector3.down;
+    }
+    public void SetNextObj(Transform nextTransform)
+    {
+        _particlesNext.transform.position = nextTransform.position + Vector3.down;
     }
 
 
