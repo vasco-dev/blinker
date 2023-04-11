@@ -1,20 +1,32 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-
-    [SerializeField] private int _maxHP = 1;    
+    //how many times can the player get hit
+    [SerializeField] private int _maxHP = 1;  
+    
+    //cooldown after 1 tap, IN SECONDS
+    [SerializeField] private float _tapCooldown = 0.2f;    
+    private bool _isOnCooldown = false;    
+    
+    //reference for the player's body
     public Rigidbody Body { get; private set; } = null;
 
+    //input actions
     private PlayerInputActions _input;
 
-    private int _targetNumber = 0;
-
+    //references for the collectible targets
     private Collectible _closestCollectible = null;
     private Collectible _nextCollectible = null;
+
+    //number of targets aquired
+    private int _targetNumber = 0;
+
+
 
     private void Awake()
     {
@@ -64,7 +76,7 @@ public class PlayerController : MonoBehaviour
 
     private void BlinkToObject()
     {
-        if (_closestCollectible != null)
+        if (_closestCollectible != null && !_isOnCooldown)
         {
             Body.velocity = Vector3.zero;
 
@@ -72,8 +84,8 @@ public class PlayerController : MonoBehaviour
 
             transform.position = _closestCollectible.transform.position;
 
-            Debug.Log("TELEPORTED");
 
+            StartCoroutine(HandleCooldown());
         }
     }
 
@@ -135,6 +147,16 @@ public class PlayerController : MonoBehaviour
         {
             CollectibleManager.Instance.SetNextObj(transform);
         }
+    }
+    private IEnumerator HandleCooldown()
+    {
+        while(!_isOnCooldown)
+        {
+            _isOnCooldown = true;
+            yield return new WaitForSeconds(_tapCooldown);
+        }
+
+        _isOnCooldown= false;
     }
 
 }

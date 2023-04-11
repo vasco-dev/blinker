@@ -45,7 +45,7 @@ public class CollectibleManager : MonoBehaviour
     private float _currentTimeInTick = 0f;
 
     public List<Collectible> ListCollectibles { get; private set; } = new List<Collectible>();
-    private int _maxSizeCollectiblePool = 10;
+    private int _maxSizeCollectiblePool = 20;
 
 
     public static CollectibleManager Instance { get; private set; }
@@ -115,7 +115,7 @@ public class CollectibleManager : MonoBehaviour
         if(ListCollectibles.Count >= _maxSizeCollectiblePool) {
             Destroy(ListCollectibles[0]);
             ListCollectibles.RemoveAt(0);
-            Debug.Log("WTF");
+            Debug.Log("too many collectibles");
         }
 
         ListCollectibles.Add(spawnedCollectible);
